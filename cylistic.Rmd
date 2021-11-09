@@ -1,0 +1,351 @@
+---
+title: "Cyclistic Bike share (member vs casual)"
+author: "Muhammad Farjad Akmal"
+date: "10/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Case Study 1: How Does a Bike-Share Navigate Speedy Success?#
+
+### Business Task:The stakeholders have asked the director of marketing, Moreno, to find ways to maximize the number of annual memberships. The analytics team is assigned for collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy. Moreno and her team are interested in analyzing the Cyclistic historical bike trip data to identify trends.
+
+### Objective: The objective of this markdown script is to answer the question, "How do annual members and casual riders use Cyclistic bikes differently ?"
+
+
+#### Install required packages
+#### tidyverse for data import and wrangling
+#### lubridate for date functions
+#### ggplot for visualization
+
+```{r libraries}
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+setwd("F:/Coursera - Data/Case Studies/Data/bike_trips_data/")
+```
+
+#=====================
+## STEP 1: COLLECT DATA
+#=====================
+####Upload Divvy datasets (csv files) here
+
+```{r bike_data}
+may_2020 <- read_csv('bike_trips_data/202005-divvy-tripdata/202005-divvy-tripdata.csv')
+jun_2020 <- read.csv('bike_trips_data/202006-divvy-tripdata/202006-divvy-tripdata.csv')
+jul_2020 <- read.csv('bike_trips_data/202007-divvy-tripdata/202007-divvy-tripdata.csv')
+aug_2020 <- read.csv('bike_trips_data/202008-divvy-tripdata/202008-divvy-tripdata.csv')
+sep_2020 <- read.csv('bike_trips_data/202009-divvy-tripdata/202009-divvy-tripdata.csv')
+oct_2020 <- read.csv('bike_trips_data/202010-divvy-tripdata/202010-divvy-tripdata.csv')
+nov_2020 <- read.csv('bike_trips_data/202011-divvy-tripdata/202011-divvy-tripdata.csv')
+dec_2020 <- read.csv('bike_trips_data/202012-divvy-tripdata/202012-divvy-tripdata.csv')
+jan_2021 <- read.csv('bike_trips_data/202101-divvy-tripdata/202101-divvy-tripdata.csv')
+feb_2021 <- read.csv('bike_trips_data/202102-divvy-tripdata/202102-divvy-tripdata.csv')
+mar_2021 <- read.csv('bike_trips_data/202103-divvy-tripdata/202103-divvy-tripdata.csv')
+apr_2021 <- read.csv('bike_trips_data/202104-divvy-tripdata/202104-divvy-tripdata.csv')
+may_2021 <- read.csv('bike_trips_data/202105-divvy-tripdata/202105-divvy-tripdata.csv')
+```
+
+#====================================================
+## STEP 2: WRANGLE DATA AND COMBINE INTO A SINGLE FILE
+#====================================================
+#### Compare column names each of the files
+#### While the names don't have to be in the same order, they DO need to match perfectly before we can use a command to join them into one file.
+
+```{r bike_columns}
+colnames(may_2020)
+colnames(jun_2020)
+colnames(jul_2020)
+colnames(aug_2020)
+colnames(sep_2020)
+colnames(oct_2020)
+colnames(nov_2020)
+colnames(dec_2020)
+colnames(jan_2021)
+colnames(feb_2021)
+colnames(mar_2021)
+colnames(apr_2021)
+colnames(may_2020)
+```
+#### Inspect the dataframes and look for incongruencies
+
+```{r data_incongruencies}
+str(may_2020)
+str(jun_2020)
+str(jul_2020)
+str(aug_2020)
+str(sep_2020)
+str(oct_2020)
+str(nov_2020)
+str(dec_2020)
+str(jan_2021)
+str(feb_2021)
+str(mar_2021)
+str(apr_2021)
+str(may_2021)
+```
+#### Convert ride_id and rideable_type to character so that they can stack correctly
+
+```{r type_conversion}
+may_2020 <- mutate(may_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+
+jun_2020 <- mutate(jun_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+
+jul_2020 <- mutate(jul_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+aug_2020 <- mutate(aug_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+sep_2020 <- mutate(sep_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+oct_2020 <- mutate(oct_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+
+nov_2020 <- mutate(nov_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+dec_2020 <- mutate(dec_2020, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+jan_2021 <- mutate(jan_2021, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                   
+
+feb_2021 <- mutate(feb_2021, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                 
+
+mar_2021 <- mutate(mar_2021, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+                 
+apr_2021 <- mutate(apr_2021, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+              
+
+may_2021 <- mutate(may_2021, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)
+                   ,start_station_id = as.character(start_station_id)
+                   ,end_station_id = as.character(end_station_id)
+                   ,started_at = as.POSIXlt.character(started_at, format = "%m/%d/%Y %H:%M")
+                   ,ended_at = as.POSIXlt.character(ended_at, format = "%m/%d/%Y %H:%M"))
+```
+
+#### Stack individual monthly data frames into one big (Yearly) data frame
+
+```{r merging_DataFrames}
+
+merged_dt <- bind_rows(may_2020, jun_2020, jul_2020, aug_2020, sep_2020, oct_2020, nov_2020, dec_2020,
+                       jan_2021, feb_2021, mar_2021, may_2021)
+```
+
+#### Remove lat, long, s, and ..14 columns
+
+
+```{r drop_columns}
+merged_dt <- merged_dt %>% 
+  select(-c(start_lat, start_lng, end_lat, end_lng, s, ...14))
+```
+
+#======================================================
+## STEP 3: CLEAN UP AND ADD DATA TO PREPARE FOR ANALYSIS
+#======================================================
+#### Inspect the new table that has been created
+
+```{r}
+colnames(merged_dt)
+nrow(merged_dt)
+dim(merged_dt)
+head(merged_dt)
+str(merged_dt)
+summary(merged_dt)
+```
+### Adressing the issue:
+#### The data can only be aggregated at the ride-level, which is too granular. We will want to add some additional columns of data -- such as day, month, year -- that provide additional opportunities to aggregate the data.
+
+
+#### Check member_casual column
+```{r}
+table(merged_dt$member_casual)
+```
+
+#### Add columns that list the date, month, day, and year of each ride
+This will allow us to aggregate ride data for each month, day, or year ... before completing these operations we 
+could only aggregate at the ride level
+```{r date}
+merged_dt$date <- as.Date(merged_dt$started_at) #The default format is mm-dd-yyyy
+merged_dt$month <- format(as.Date(merged_dt$date), "%m")
+merged_dt$day <- format(as.Date(merged_dt$date), "%d")
+merged_dt$year <- format(as.Date(merged_dt$date), "%Y")
+merged_dt$day_of_week <- format(as.Date(merged_dt$date), "%A")
+```
+
+#### Add a "ride_length" calculation to all_trips (in seconds)
+```{r}
+merged_dt$ride_length <- difftime(merged_dt$ended_at, merged_dt$started_at)
+```
+
+#### Inspect the structure of the columns
+```{r}
+str(merged_dt)
+```
+
+#### Remove bad data 
+#### Check for Null and NA values
+```{r remove_bad_data}
+merged_dt_1 <- merged_dt[!(merged_dt$ride_length < 0), ]  
+sum(is.na(merged_dt_1))
+sum(is.null(merged_dt_1))
+```
+
+#### Convert "ride_length" from Factor to numeric so we can run calculations on the data
+
+```{r}
+is.factor(merged_dt_1$ride_length)
+merged_dt_1$ride_length <- as.numeric(as.character(merged_dt_1$ride_length))
+is.numeric(merged_dt_1$ride_length)
+```
+
+
+```{r}
+head(merged_dt_1)
+```
+
+#=====================================
+### STEP 4: CONDUCT DESCRIPTIVE ANALYSIS
+#=====================================
+#### Descriptive analysis on ride_length (all figures in seconds)
+```{r}
+print(paste('mean is:',mean(merged_dt_1$ride_length))) #straight average (total ride length / rides)
+print(paste('median is:',median(merged_dt_1$ride_length))) #midpoint number in the ascending array of ride lengths
+print(paste('max ride_length:',max(merged_dt_1$ride_length))) #longest ride
+print(paste('min ride_length:',min(merged_dt_1$ride_length))) #shortest ride
+```
+
+```{r summary}
+summary(merged_dt_1)
+```
+#### Compare members and casual users
+```{r compare}
+aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual, FUN = mean)
+aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual, FUN = median)
+aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual, FUN = min)
+aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual, FUN = max)
+```
+
+#### See the average ride time by each day for members vs casual users
+```{r avg_ride_length}
+aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual + merged_dt_1$day_of_week, FUN = mean)
+```
+
+#### Notice that the days of the week are out of order. Let's fix that.
+```{r fixed}
+merged_dt_1$day_of_week <- ordered(merged_dt_1$day_of_week, levels = c('Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'))
+```
+
+```{r avg_ride_length_fixed}
+aggregate(merged_dt$ride_length ~ merged_dt$member_casual + merged_dt$day_of_week, FUN = mean)
+```
+#### Analyze ridership data by type and weekday
+```{r}
+merged_dt_1 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, weekday) %>%
+  summarise(number_of_rides = n()
+            ,average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday)
+```
+#### Let's visualize the number of rides by rider type
+
+```{r visualize}
+merged_dt_1 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, weekday) %>%
+  summarise(number_of_rides = n()
+            ,average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday) %>% 
+  ggplot(aes(x = member_casual, y = number_of_rides, fill = member_casual)) +
+  geom_col(position ='dodge')
+
+```
+
+
+#### Let's create a visualization for average duration
+
+```{r visualize avg_duration}
+merged_dt_1 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, weekday) %>%
+  summarise(number_of_rides = n()
+            ,average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday) %>% 
+  ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
+  geom_col(position ='dodge')
+```
+#=================================================
+### STEP 5: EXPORT SUMMARY FILE FOR FURTHER ANALYSIS
+#=================================================
+```{r export_csv}
+avg_ride <- aggregate(merged_dt_1$ride_length ~ merged_dt_1$member_casual + merged_dt_1$day_of_week, FUN = mean)
+write_csv(avg_ride, file  = 'bike_trips_data/avg_ride_2.csv')
+
+```
