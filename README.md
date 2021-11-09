@@ -64,6 +64,6 @@ Null/empty/ rows and duplicate entries removed, two new columns added, ride_leng
 4. Ensure your work is accessible. 
 
 ### Deliverable:
-1.	Tableau: used as a viz software to find and identify patterns in the data.
+Tableau: used as a viz software to find and identify patterns in the data.
 https://public.tableau.com/views/Cyclistic-GoogleCapstonePorject-1/rideable_typemembervscasual_yearly?:language=en-US&:display_count=n&:origin=viz_share_link
 
