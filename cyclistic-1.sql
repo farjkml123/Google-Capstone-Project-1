@@ -1,3 +1,6 @@
+-- Database software: PostgresSQL - Valentnia studio 10.0
+-- Queries for data filtering, data merging and exporting data for visualization.
+
 -- Create a new Table (Yearly analysis)
 CREATE TABLE yearly_cyclistic AS
 (SELECT * FROM "202005-divvy-tripdata"
