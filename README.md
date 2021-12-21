@@ -17,18 +17,18 @@ The stakeholders have asked the director of marketing, Moreno, to find ways to m
 
 # Prepare Phase:
 	
- ### Key tasks:
-  1.	Download data and store it appropriately.
+  ### Key tasks:
+1.  Download data and store it appropriately.
   
-  3.	Identify how it’s organized.
+2.  Identify how it’s organized:
   
-  	- Data is organized in rows and columns in csv format
+    - Data is organized in rows and columns in csv format
   	
-  3.	Sort and filter the data
+3.  Sort and filter the data:
   
-  	- Sorting data according to start date and filtering out any duplicates and missing values.
+    - Sorting data according to start date and filtering out any duplicates and missing values.
   
-  4.	Determine the credibility of the data ROCCC
+4.  Determine the credibility of the data ROCCC
 	
 ### Deliverable: 
  A description of all data sources used.
@@ -39,17 +39,17 @@ The data is publicly available and can be fetched from: https://divvy-tripdata.s
 # Process:
 
   ### Key tasks:
-   1.	Check the data for errors
+1.  Check the data for errors
    
-   	- Data contain lots of missing values and inconsistent formatting
+    - Data contain lots of missing values and inconsistent formatting
   
-   2.	Choose your tools
+2.  Choose your tools
   
-  	- Spreadsheet & R
+    - Spreadsheet & R
   
-   3.	Transform the data ride_length & day_of_week are new attributes
+3.  Transform the data ride_length & day_of_week are new attributes
   
-   4.	Document the cleaning process
+4.  Document the cleaning process
 
 ### Deliverable:
 Null/empty/ rows and duplicate entries removed, two new columns added, ride_length and day_of_week respectively. Ride_length = ended_at  –  started_at  & day_of_week =           WEEKDAY(started_at).
