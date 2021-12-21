@@ -23,6 +23,7 @@ The stakeholders have asked the director of marketing, Moreno, to find ways to m
   3.	Identify how it’s organized.
   
   	- Data is organized in rows and columns in csv format
+  	
   3.	Sort and filter the data
   
   	- Sorting data according to start date and filtering out any duplicates and missing values.
